@@ -1,8 +1,11 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Search, Plus, Eye } from "lucide-react";
 import { customers } from "../data/demoData";
+import CustomerDetailModal from "../components/CustomerDetailModal";
 
 export default function CustomersPage({ search, setSearch, badge }) {
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+
   const filteredCustomers = useMemo(() => {
     return customers.filter((c) =>
       [c.name, c.email, c.phone, c.id, c.type]
@@ -72,13 +75,18 @@ export default function CustomersPage({ search, setSearch, badge }) {
                   </td>
                   <td className="px-6 py-4">
                     <span
-                      className={`rounded-full border px-3 py-1 text-xs ${badge(customer.status)}`}
+                      className={`rounded-full border px-3 py-1 text-xs ${badge(
+                        customer.status,
+                      )}`}
                     >
                       {customer.status}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <button className="inline-flex items-center gap-2 rounded-xl border border-black/5 bg-slate-50 px-3 py-2 text-xs">
+                    <button
+                      onClick={() => setSelectedCustomer(customer)}
+                      className="inline-flex items-center gap-2 rounded-xl border border-black/5 bg-slate-50 px-3 py-2 text-xs transition hover:bg-slate-100"
+                    >
                       <Eye className="h-4 w-4" /> Anzeigen
                     </button>
                   </td>
@@ -88,6 +96,12 @@ export default function CustomersPage({ search, setSearch, badge }) {
           </table>
         </div>
       </div>
+
+      <CustomerDetailModal
+        customer={selectedCustomer}
+        onClose={() => setSelectedCustomer(null)}
+        badge={badge}
+      />
     </div>
   );
 }

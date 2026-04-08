@@ -13,6 +13,7 @@ import {
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 
+import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import CustomersPage from "./pages/CustomersPage";
 import OrdersPage from "./pages/OrdersPage";
@@ -23,6 +24,7 @@ import DeliveryPage from "./pages/DeliveryPage";
 import WarehousePage from "./pages/WarehousePage";
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activePage, setActivePage] = useState("dashboard");
   const [search, setSearch] = useState("");
 
@@ -39,20 +41,20 @@ export default function App() {
 
   const badge = (status) => {
     const map = {
-      Aktiv: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20",
-      Neu: "bg-sky-500/15 text-sky-300 border-sky-500/20",
-      Premium: "bg-orange-500/15 text-orange-300 border-orange-500/20",
-      Geliefert: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20",
-      "In Bearbeitung": "bg-amber-500/15 text-amber-300 border-amber-500/20",
-      Offen: "bg-slate-500/20 text-slate-200 border-slate-400/20",
-      Bezahlt: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20",
-      Versendet: "bg-sky-500/15 text-sky-300 border-sky-500/20",
-      Überfällig: "bg-rose-500/15 text-rose-300 border-rose-500/20",
-      Zugestellt: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20",
-      Geöffnet: "bg-orange-500/15 text-orange-300 border-orange-500/20",
-      "Neu eingegangen": "bg-sky-500/15 text-sky-300 border-sky-500/20",
-      "In Prüfung": "bg-amber-500/15 text-amber-300 border-amber-500/20",
-      Freigegeben: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20",
+      Aktiv: "bg-emerald-100 text-emerald-700 border-emerald-200",
+      Neu: "bg-sky-100 text-sky-700 border-sky-200",
+      Premium: "bg-orange-100 text-orange-700 border-orange-200",
+      Geliefert: "bg-emerald-100 text-emerald-700 border-emerald-200",
+      "In Bearbeitung": "bg-amber-100 text-amber-700 border-amber-200",
+      Offen: "bg-slate-100 text-slate-700 border-slate-200",
+      Bezahlt: "bg-emerald-100 text-emerald-700 border-emerald-200",
+      Versendet: "bg-sky-100 text-sky-700 border-sky-200",
+      Überfällig: "bg-rose-100 text-rose-700 border-rose-200",
+      Zugestellt: "bg-emerald-100 text-emerald-700 border-emerald-200",
+      Geöffnet: "bg-orange-100 text-orange-700 border-orange-200",
+      "Neu eingegangen": "bg-sky-100 text-sky-700 border-sky-200",
+      "In Prüfung": "bg-amber-100 text-amber-700 border-amber-200",
+      Freigegeben: "bg-emerald-100 text-emerald-700 border-emerald-200",
       "Auf Lager": "bg-emerald-100 text-emerald-700 border-emerald-200",
       Niedrig: "bg-amber-100 text-amber-700 border-amber-200",
       Kritisch: "bg-red-100 text-red-700 border-red-200",
@@ -63,6 +65,10 @@ export default function App() {
 
     return map[status] || "bg-slate-100 text-slate-700 border-slate-200";
   };
+
+  if (!isLoggedIn) {
+    return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
+  }
 
   return (
     <div className="min-h-screen bg-[#f7f4ef] text-slate-900">
@@ -96,15 +102,10 @@ export default function App() {
               )}
 
               {activePage === "orders" && <OrdersPage badge={badge} />}
-
               {activePage === "invoices" && <InvoicesPage badge={badge} />}
-
               {activePage === "portal" && <OnlinePortalPage badge={badge} />}
-
               {activePage === "products" && <ProductsPage badge={badge} />}
-
               {activePage === "delivery" && <DeliveryPage badge={badge} />}
-
               {activePage === "warehouse" && <WarehousePage badge={badge} />}
             </motion.div>
           </div>
